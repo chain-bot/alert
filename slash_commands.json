@@ -1,0 +1,52 @@
+[
+  {
+      "name": "price",
+      "description": "Send current price of a cryptocurrency",
+      "options": [
+          {
+              "name": "base_symbol",
+              "description": "The Base Symbol of the Asset, e.g. BTC.",
+              "type": 3,
+              "required": "True",
+              "choices": [
+                  {
+                      "name": "BTC",
+                      "value": "btc"
+                  },
+                  {
+                      "name": "ETH",
+                      "value": "eth"
+                  }
+              ]
+          },
+          {
+              "name": "quote_symbol",
+              "description": "The Quote Symbol (default USDT).",
+              "type": 3,
+              "required": "False",
+              "choices": [
+                  {
+                      "name": "BTC",
+                      "value": "btc"
+                  },
+                  {
+                      "name": "ETH",
+                      "value": "eth"
+                  },
+                  {
+                      "name": "USDT",
+                      "value": "usdt"
+                  }
+              ]
+          }
+      ]
+  },
+  {
+      "name": "register_ath_alert",
+      "description": "Subscribe the current channel to ATH price alerts."
+  },
+  {
+      "name": "unregister_ath_alert",
+      "description": "Remove subscription for the current channel of ATH price alerts."
+  }
+]

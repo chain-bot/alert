@@ -1,0 +1,4 @@
+.env
+firestore-admin.json
+__pycache__
+venv/
