@@ -1,3 +1,4 @@
+.idea/
 .env
 firestore-admin.json
 __pycache__
