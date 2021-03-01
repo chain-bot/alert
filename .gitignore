@@ -1,5 +1,5 @@
 .idea/
 .env
-firestore-admin.json
+*firestore-admin.json
 __pycache__
 venv/

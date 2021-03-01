@@ -19,7 +19,7 @@ class AllTimeHighCog(commands.Cog):
         print(PRINT_LINE)
         self.send_all_time_high_message.start()
 
-    @tasks.loop(seconds=120.0)
+    @tasks.loop(seconds=30)
     async def send_all_time_high_message(self):
         print("CHECKING ALL TIME HIGHS")
         channel_ids = self.find_registered_channels()
@@ -47,16 +47,16 @@ class AllTimeHighCog(commands.Cog):
                 try:
                     r = requests.get(binance_price_url)
                     price = json.loads(r.content)
-                    current_close = price[0][4]
-                    price_updates[quote_symbol] = current_close
+                    current_high = price[0][2]
+                    price_updates[quote_symbol] = current_high
                     data = doc_ref.get().to_dict()
                     if data is None:
                         doc_ref.set({})
                         data = {}
                     last_checked_close = float(data.get(quote_symbol, 0))
-                    if float(current_close) > last_checked_close:
-                        ret.append(f'New ATH: {base_symbol}/{quote_symbol} {current_close}')
-                        doc_ref.update({quote_symbol: current_close})
+                    if float(current_high) > last_checked_close:
+                        ret.append(f'New ATH: {base_symbol}/{quote_symbol} {current_high}')
+                        doc_ref.update({quote_symbol: current_high})
                 except:
                     print("Error Getting Price Data from Binance")
                     traceback.print_exc()
