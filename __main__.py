@@ -6,7 +6,7 @@ from slack import Slack
 from dotenv import load_dotenv
 
 load_dotenv()
-logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO, datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG, datefmt='%m/%d/%Y %I:%M:%S %p')
 logger = logging.getLogger(__name__)
 
 if __name__ == '__main__':
@@ -21,6 +21,7 @@ if __name__ == '__main__':
 
         for (base, quote), prices in price_map.items():
             highest_price = get_largest_price(prices)
+            logger.debug(f"{exchange_name}: HIGHEST PRICE FOR {base}{quote} IS {highest_price}")
             if stored_ath_data is None or base not in stored_ath_data or quote not in stored_ath_data[base]:
                 firestore.set_exchange_ath_data(exchange_name, base, quote, highest_price)
                 slack.publish_init_message(exchange_name, base, quote, 0, highest_price)

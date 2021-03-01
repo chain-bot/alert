@@ -3,7 +3,6 @@ import logging
 import os
 import sys
 import requests
-
 logger = logging.getLogger(__name__)
 
 
@@ -30,13 +29,13 @@ class Slack:
             sys.exit()
 
     def _send_message(self, title, message_blocks):
-        print("Sending Message")
+        logger.debug("Sending Message")
         r = requests.post(self.__webhook,
                           data=json.dumps({"text": title, "blocks": message_blocks}),
                           headers={'Content-Type': 'application/json'}, verify=True)
-        print(r.status_code)
-        print(r.text)
-        print("Message Sent")
+        logger.debug(r.status_code)
+        logger.debug(r.text)
+        logger.debug("Message Sent")
 
     def publish_ath_message(self, exchange, base, quote, old_price, new_price):
         self._send_message(f"New All Time High for {base}-{quote}", [

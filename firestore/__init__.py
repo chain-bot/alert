@@ -1,10 +1,13 @@
+import logging
+
 import firebase_admin
 import os
 from firebase_admin import credentials, firestore
+logger = logging.getLogger(__name__)
 
 FIRESTORE_JSON = os.getenv('FIRESTORE_ADMIN')
 if FIRESTORE_JSON is None:
-    print("WARNING: local use")
+    logger.warning("LOCAL USE")
 else:
     with open("firestore-admin.json", "w") as jsonFile:
         jsonFile.write(FIRESTORE_JSON)

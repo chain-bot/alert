@@ -4,10 +4,11 @@ from exchanges import OHLCV
 
 
 def get_largest_price(prices: List[OHLCV]):
-    ret = 0
+    ret = 0.0
     for price in prices:
-        ret = max(ret, price.open, price.high, price.low, price.close)
+        ret = max([ret, price.open, price.high, price.low, price.close])
     return ret
+
 
 def get_fiat_map() -> Dict[str, str]:
     r = requests.get('https://web-api.coinmarketcap.com/v1/fiat/map')

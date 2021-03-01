@@ -4,7 +4,7 @@ from typing import Dict, List, Tuple
 from exchanges.interface import Exchange, OHLCV
 from exchanges.binance import Binance
 
-logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO, datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG, datefmt='%m/%d/%Y %I:%M:%S %p')
 logger = logging.getLogger(__name__)
 
 
@@ -14,7 +14,7 @@ class Exchanges:
             Binance(),
         ]
         # TODO: Make this an environment variable
-        self.__supported_pairs = {'BTC', 'ETH', 'USDT', 'SOL', 'ATOM', 'BNB'}
+        self.__supported_pairs = {'BTC', 'USDT'}
 
     # Exchange -> (Base, Quote) -> Prices
     def get_prices(self) -> Dict[str, Dict[Tuple[str, str], List[OHLCV]]]:

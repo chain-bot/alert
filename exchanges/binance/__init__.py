@@ -3,14 +3,11 @@ import logging
 from datetime import datetime, timedelta
 from typing import List
 from urllib.parse import urlencode
-import dateparser
-import pytz
 import requests
 from backoff import on_exception, expo
 from ratelimit import limits, RateLimitException
 from exchanges.interface import Exchange, OHLCV, CurrencyPair
 
-logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO, datefmt='%m/%d/%Y %I:%M:%S %p')
 logger = logging.getLogger(__name__)
 
 NAME = 'BINANCE'
@@ -25,26 +22,7 @@ ONE_HOUR_MILI = 60 * 60 * 1000
 # TODO: Make this more robust
 KLINE_INTERVAL = "1m"
 KLINE_GRANULARITY = 60
-
-
-# https://sammchardy.github.io/binance/2018/01/08/historical-data-download-binance.html
-def date_to_milliseconds(date_str):
-    """Convert UTC date to milliseconds
-    If using offset strings add "UTC" to date string e.g. "now UTC", "11 hours ago UTC"
-    See dateparse docs for formats http://dateparser.readthedocs.io/en/latest/
-    :param date_str: date in readable format, i.e. "January 01, 2018", "11 hours ago UTC", "now UTC"
-    :type date_str: str
-    """
-    # get epoch value in UTC
-    epoch = datetime.utcfromtimestamp(0).replace(tzinfo=pytz.utc)
-    # parse our date string
-    d = dateparser.parse(date_str)
-    d = d - timedelta(minutes=d.minute, seconds=d.second, microseconds=0)
-    # if the date is not timezone aware apply UTC timezone
-    if d.tzinfo is None or d.tzinfo.utcoffset(d) is None:
-        d = d.replace(tzinfo=pytz.utc)
-    # return the difference in time
-    return int((d - epoch).total_seconds()) * 1000
+ep = datetime(1970, 1, 1, 0, 0, 0)
 
 
 class Binance(Exchange):
@@ -59,6 +37,7 @@ class Binance(Exchange):
     @on_exception(expo, RateLimitException, max_tries=10)
     @limits(calls=10, period=ONE_MINUTE)
     def get_supported_assets(self) -> List[CurrencyPair]:
+        logging.debug(f"{self.name()}: GETTING SUPPORTED ASSETS")
         url = f'{BASE_URL}{EXCHANGE_INFO}'
         r = requests.get(url)
         traded_pairs = r.json()['symbols']
@@ -76,7 +55,11 @@ class Binance(Exchange):
     @on_exception(expo, RateLimitException, max_tries=10)
     @limits(calls=10, period=ONE_MINUTE)
     def get_last_hour_prices(self, product_id: str) -> [OHLCV]:
-        end_time = date_to_milliseconds("now UTC")
+        logging.debug(f"{self.name()}: GETTING LAST HOUR PRICES {product_id}")
+        d = datetime.utcnow()
+        d = d - timedelta(microseconds=0)
+        end_time = int((d - ep).total_seconds()) * 1000
+        # end_time = date_to_milliseconds("now UTC")
         start_time = end_time - ONE_HOUR_MILI
         params = {
             'symbol': product_id,
@@ -103,6 +86,7 @@ class Binance(Exchange):
 
 if __name__ == "__main__":
     from dotenv import load_dotenv
+
     load_dotenv(dotenv_path='../../.env')
     logger.setLevel(logging.DEBUG)
 
