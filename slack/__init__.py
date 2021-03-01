@@ -9,9 +9,9 @@ logger = logging.getLogger(__name__)
 def _get_ath_mesage_block(exchange, base, quote, old_price, new_price):
     message = exchange.ljust(20) +\
               f'{base}-{quote}'.ljust(10) +\
-              str(old_price).ljust(15) +\
+              str(old_price).ljust(20) +\
               "->".ljust(5) +\
-              str(new_price).ljust(15)
+              str(new_price).ljust(20)
     return {
         "type": "section",
         "text": {

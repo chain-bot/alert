@@ -14,7 +14,7 @@ class Exchanges:
             Binance(),
         ]
         # TODO: Make this an environment variable
-        self.__supported_pairs = {'BTC', 'USDT'}
+        self.__supported_pairs = {'BTC', 'ETH', 'ATOM', 'SOL', 'BNB', 'DOGE', 'AAVE', 'USDT'}
 
     # Exchange -> (Base, Quote) -> Prices
     def get_prices(self) -> Dict[str, Dict[Tuple[str, str], List[OHLCV]]]:
@@ -34,6 +34,7 @@ class Exchanges:
 
 if __name__ == "__main__":
     from dotenv import load_dotenv
+
     load_dotenv(dotenv_path='../.env')
     logger.setLevel(logging.DEBUG)
 
