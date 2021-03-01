@@ -7,7 +7,7 @@
 
 [comment]: <> (</p>)
 
-[comment]: <> (<img src="images/crypto-balance-check-blurred.png" align="right" width="400" alt="Example of working bot">)
+<img src="images/example.png" align="right" width="400" alt="Example of working bot">
 A cron job to send Slack messages with ATH price alerts.
 
 
