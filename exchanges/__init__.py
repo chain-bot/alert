@@ -13,6 +13,7 @@ class Exchanges:
         self.__exchanges: [Exchange] = [
             Binance(),
         ]
+        # TODO: Make this an environment variable
         self.__supported_pairs = {'BTC', 'ETH', 'USDT', 'SOL', 'ATOM', 'BNB'}
 
     # Exchange -> (Base, Quote) -> Prices
