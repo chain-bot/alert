@@ -42,6 +42,7 @@ class OHLCV:
 # TODO: Get Raw Trades (whale alerts?)
 class Exchange:
     def __init__(self):
+        # TODO: Not currently used
         fiat_currencies_raw: str = os.getenv('FIAT_CURRENCY') or 'CAD,USD'
         self.fiat = [fiat_currency.strip() for fiat_currency in fiat_currencies_raw.split(',')]
 
